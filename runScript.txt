@@ -1,0 +1,5 @@
+- Yolo
+tensorflow_model_server --port=8500 --model_name=traffic-yolo --model_base_path=/home/yitao/Documents/fun-project/tensorflow-related/traffic-jammer/models/traffic-yolo >out-001 2>&1
+
+- Yolo tiny
+tensorflow_model_server --port=8500 --model_name=traffic-tiny-yolo-voc --model_base_path=/home/yitao/Documents/fun-project/tensorflow-related/traffic-jammer/models/traffic-tiny-yolo-voc >out-001 2>&1

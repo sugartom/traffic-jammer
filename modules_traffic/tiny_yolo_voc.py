@@ -18,12 +18,12 @@ from tensorflow.python.framework import tensor_util
 
 # Place your downloaded cfg and weights under "checkpoints/"
 YOLO_CONFIG = '/home/yitao/Documents/fun-project/tensorflow-related/traffic-jammer/cfg'
-YOLO_MODEL = '/home/yitao/Documents/fun-project/tensorflow-related/traffic-jammer/cfg/yolo.cfg'
-YOLO_WEIGHTS = '/home/yitao/Documents/fun-project/tensorflow-related/traffic-jammer/bin/yolo.weights'
+YOLO_MODEL = '/home/yitao/Documents/fun-project/tensorflow-related/traffic-jammer/cfg/tiny-yolo-voc.cfg'
+YOLO_WEIGHTS = '/home/yitao/Documents/fun-project/tensorflow-related/traffic-jammer/bin/tiny-yolo-voc.weights'
 
 YOLO_THRES = 0.4
 
-class Yolo:
+class TinyYoloVoc:
 
     @staticmethod
     def Setup():
@@ -32,7 +32,7 @@ class Yolo:
                 "load": YOLO_WEIGHTS, 
                 "threshold": YOLO_THRES
             }
-        Yolo.tfnet = TFNet(opt)
+        TinyYoloVoc.tfnet = TFNet(opt)
 
     def PreProcess(self, request_input, istub, grpc_flag):
         if (grpc_flag):
@@ -46,7 +46,7 @@ class Yolo:
     def Apply(self):
         # self.start = time.time()
         # print("[@@@] dtype = %s, shape = %s" % (self.image.dtype, str(self.image.shape)))
-        self.dets = Yolo.tfnet.return_predict(self.image, "traffic-yolo", self.istub)
+        self.dets = TinyYoloVoc.tfnet.return_predict(self.image, "traffic-tiny-yolo-voc", self.istub)
         # print("[@@@] This duration = %s" % str(time.time() - self.start))
 
         # print(self.dets)
