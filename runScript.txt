@@ -3,3 +3,40 @@ tensorflow_model_server --port=8500 --model_name=traffic-yolo --model_base_path=
 
 - Yolo tiny
 tensorflow_model_server --port=8500 --model_name=traffic-tiny-yolo-voc --model_base_path=/home/yitao/Documents/fun-project/tensorflow-related/traffic-jammer/models/traffic-tiny-yolo-voc >out-001 2>&1
+
+
+
+
+
+
+
+
+# for single DNN under folder single_dnn_client
+
+- resnet
+tensorflow_model_server --port=8500 --model_name=resnet --model_base_path=/home/yitao/Downloads/tmp/exported_model/resnet_v2_fp32_savedmodel_NHWC_jpg >out-001 2>&1
+python resnet_client_grpc.py
+
+- caffe_mnist
+tensorflow_model_server --port=8500 --model_name=caffe_mnist --model_base_path=/home/yitao/Downloads/tmp/exported_model/caffe_mnist >out-001 2>&1
+python caffe_mnist_client.py
+
+- caffe_googlenet
+tensorflow_model_server --port=8500 --model_name=caffe_googlenet --model_base_path=/home/yitao/Downloads/tmp/exported_model/caffe_googlenet >out-001 2>&1
+python caffe_googlenet_client.py
+
+- caffe_resnet50
+tensorflow_model_server --port=8500 --model_name=caffe_resnet50 --model_base_path=/home/yitao/Downloads/tmp/exported_model/caffe_resnet50 >out-001 2>&1
+python caffe_resnet_client.py caffe_resnet50
+
+- caffe_resnet101
+tensorflow_model_server --port=8500 --model_name=caffe_resnet101 --model_base_path=/home/yitao/Downloads/tmp/exported_model/caffe_resnet101 >out-001 2>&1
+python caffe_resnet_client.py caffe_resnet101
+
+- caffe_resnet152
+tensorflow_model_server --port=8500 --model_name=caffe_resnet152 --model_base_path=/home/yitao/Downloads/tmp/exported_model/caffe_resnet152 >out-001 2>&1
+python caffe_resnet_client.py caffe_resnet152
+
+- vgg
+tensorflow_model_server --port=8500 --model_name=vgg_model --model_base_path=/home/yitao/Downloads/tmp/exported_model/vgg_model >out-001 2>&1
+python vgg_client.py
