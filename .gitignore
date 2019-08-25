@@ -1,3 +1,4 @@
 models/*
 bin/*
 modules_traffic/*.pyc
+out-*

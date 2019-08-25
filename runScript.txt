@@ -12,7 +12,6 @@ tensorflow_model_server --port=8500 --model_name=traffic-tiny-yolo-voc --model_b
 
 
 # for single DNN under folder single_dnn_client
-
 - resnet
 tensorflow_model_server --port=8500 --model_name=resnet --model_base_path=/home/yitao/Downloads/tmp/exported_model/resnet_v2_fp32_savedmodel_NHWC_jpg >out-001 2>&1
 python resnet_client_grpc.py
@@ -40,3 +39,18 @@ python caffe_resnet_client.py caffe_resnet152
 - vgg
 tensorflow_model_server --port=8500 --model_name=vgg_model --model_base_path=/home/yitao/Downloads/tmp/exported_model/vgg_model >out-001 2>&1
 python vgg_client.py
+
+# for obj det from TF's model zoo
+https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md
+
+- ssd_mobilenet_v1_coco
+tensorflow_model_server --port=8500 --model_name=ssd_mobilenet_v1_coco --model_base_path=/home/yitao/Downloads/tmp/exported_model/ssd_mobilenet_v1_coco_2018_01_28 >out-001 2>&1
+python obj_client.py mobilenet
+
+- ssd_inception_v2_coco
+tensorflow_model_server --port=8500 --model_name=ssd_inception_v2_coco --model_base_path=/home/yitao/Downloads/tmp/exported_model/ssd_inception_v2_coco_2018_01_28 >out-001 2>&1
+python obj_client.py inception
+
+- ssd_resnet50_v1_fpn
+tensorflow_model_server --port=8500 --model_name=ssd_resnet50_v1_fpn --model_base_path=/home/yitao/Downloads/tmp/exported_model/ssd_resnet50_v1_fpn_shared_box_predictor_640x640_coco14_sync_2018_07_03 >out-001 2>&1
+python obj_client.py inception
