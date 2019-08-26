@@ -52,7 +52,7 @@ class Inception:
 
   def Apply(self):
     request = predict_pb2.PredictRequest()
-    request.model_spec.name = 'ssd_inception_v2_coco'
+    request.model_spec.name = 'traffic_inception'
     request.model_spec.signature_name = 'serving_default'
     request.inputs['inputs'].CopyFrom(
         tf.contrib.util.make_tensor_proto(self.image, shape=self.image.shape))

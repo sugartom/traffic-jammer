@@ -23,7 +23,7 @@ YOLO_WEIGHTS = '/home/yitao/Documents/fun-project/tensorflow-related/traffic-jam
 
 YOLO_THRES = 0.4
 
-class Yolo:
+class TrafficYolo:
 
     @staticmethod
     def Setup():
@@ -32,7 +32,7 @@ class Yolo:
                 "load": YOLO_WEIGHTS, 
                 "threshold": YOLO_THRES
             }
-        Yolo.tfnet = TFNet(opt)
+        TrafficYolo.tfnet = TFNet(opt)
 
     def PreProcess(self, request_input, istub, grpc_flag):
         if (grpc_flag):
@@ -46,7 +46,7 @@ class Yolo:
     def Apply(self):
         # self.start = time.time()
         # print("[@@@] dtype = %s, shape = %s" % (self.image.dtype, str(self.image.shape)))
-        self.dets = Yolo.tfnet.return_predict(self.image, "traffic_yolo", self.istub)
+        self.dets = TrafficYolo.tfnet.return_predict(self.image, "traffic_yolo", self.istub)
         # print("[@@@] This duration = %s" % str(time.time() - self.start))
 
         # print(self.dets)

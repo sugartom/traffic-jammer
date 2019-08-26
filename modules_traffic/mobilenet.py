@@ -52,7 +52,7 @@ class Mobilenet:
 
   def Apply(self):
     request = predict_pb2.PredictRequest()
-    request.model_spec.name = 'ssd_mobilenet_v1_coco'
+    request.model_spec.name = 'traffic_mobilenet'
     request.model_spec.signature_name = 'serving_default'
     request.inputs['inputs'].CopyFrom(
         tf.contrib.util.make_tensor_proto(self.image, shape=self.image.shape))

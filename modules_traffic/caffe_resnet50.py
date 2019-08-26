@@ -22,13 +22,13 @@ class CaffeResnet50:
 
   def Apply(self):
     request = predict_pb2.PredictRequest()
-    request.model_spec.name = 'caffe_resnet50'
+    request.model_spec.name = 'traffic_resnet50'
     request.model_spec.signature_name = 'predict_images'
     request.inputs['images'].CopyFrom(
         tf.contrib.util.make_tensor_proto(self.image, shape=[len(self.image)]))
     
     result = self.istub.Predict(request, 10.0)
-    self.output = "CarDone"
+    self.output = "FaceDone"
 
   def PostProcess(self, grpc_flag):
     if (grpc_flag):

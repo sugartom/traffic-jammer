@@ -45,7 +45,7 @@ class Vgg:
 
   def Apply(self):
     request = predict_pb2.PredictRequest()
-    request.model_spec.name = 'vgg_model'
+    request.model_spec.name = 'traffic_vgg'
     request.model_spec.signature_name = 'predict_images'
     request.inputs['images'].CopyFrom(
         tf.contrib.util.make_tensor_proto(np.float32(self.image), shape=[1, 224, 224, 3]))

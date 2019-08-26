@@ -22,7 +22,7 @@ class CaffeResnet152:
 
   def Apply(self):
     request = predict_pb2.PredictRequest()
-    request.model_spec.name = 'caffe_resnet152'
+    request.model_spec.name = 'traffic_resnet152'
     request.model_spec.signature_name = 'predict_images'
     request.inputs['images'].CopyFrom(
         tf.contrib.util.make_tensor_proto(self.image, shape=[len(self.image)]))

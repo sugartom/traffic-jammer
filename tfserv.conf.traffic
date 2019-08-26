@@ -5,28 +5,28 @@ model_config_list: {
     model_platform: "tensorflow"
   },
   config: {
-    name: "traffic_tiny_yolo_voc",
+    name: "traffic_tinyyolo",
     base_path: "/home/yitao/Documents/fun-project/tensorflow-related/traffic-jammer/models/traffic_tiny_yolo_voc",
     model_platform: "tensorflow"
   },
   config: {
-    name: "caffe_resnet152",
-    base_path: "/home/yitao/Downloads/tmp/exported_model/caffe_resnet152",
+    name: "traffic_resnet152",
+    base_path: "/home/yitao/Documents/fun-project/tensorflow-related/traffic-jammer/models/caffe_resnet152",
     model_platform: "tensorflow"
   },
   config: {
-    name: "vgg_model",
-    base_path: "/home/yitao/Downloads/tmp/exported_model/vgg_model",
+    name: "traffic_resnet50",
+    base_path: "/home/yitao/Documents/fun-project/tensorflow-related/traffic-jammer/models/caffe_resnet50",
     model_platform: "tensorflow"
   },
   config: {
-    name: "ssd_mobilenet_v1_coco",
-    base_path: "/home/yitao/Downloads/tmp/exported_model/ssd_mobilenet_v1_coco_2018_01_28",
+    name: "traffic_mobilenet",
+    base_path: "/home/yitao/Documents/fun-project/tensorflow-related/traffic-jammer/models/ssd_mobilenet_v1_coco_2018_01_28",
     model_platform: "tensorflow"
   },
   config: {
-    name: "ssd_inception_v2_coco",
-    base_path: "/home/yitao/Downloads/tmp/exported_model/ssd_inception_v2_coco_2018_01_28",
+    name: "traffic_inception",
+    base_path: "/home/yitao/Documents/fun-project/tensorflow-related/traffic-jammer/models/ssd_inception_v2_coco_2018_01_28",
     model_platform: "tensorflow"
   }
 }

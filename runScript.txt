@@ -1,14 +1,27 @@
+tensorflow_model_server --port=8500 --platform_config_file=/home/yitao/Documents/edge/edge-system/config/platform.conf --model_config_file=/home/yitao/Documents/fun-project/tensorflow-related/traffic-jammer/tfserv.conf.traffic --monitoring_config_file=/home/yitao/Documents/edge/edge-system/config/monitoring.conf --rest_api_port=55101 --enable_batching --batching_parameters_file=/home/yitao/Documents/edge/edge-system/config/batching.conf >out-001 2>&1
+
+
 - Yolo
 tensorflow_model_server --port=8500 --model_name=traffic_yolo --model_base_path=/home/yitao/Documents/fun-project/tensorflow-related/traffic-jammer/models/traffic_yolo >out-001 2>&1
 
 - Yolo tiny
-tensorflow_model_server --port=8500 --model_name=traffic_tiny_yolo_voc --model_base_path=/home/yitao/Documents/fun-project/tensorflow-related/traffic-jammer/models/traffic_tiny_yolo_voc >out-001 2>&1
+tensorflow_model_server --port=8500 --model_name=traffic_tinyyolo --model_base_path=/home/yitao/Documents/fun-project/tensorflow-related/traffic-jammer/models/traffic_tiny_yolo_voc >out-001 2>&1
 
+- caffe_resnet152
+tensorflow_model_server --port=8500 --model_name=traffic_resnet152 --model_base_path=/home/yitao/Documents/fun-project/tensorflow-related/traffic-jammer/models/caffe_resnet152 >out-001 2>&1
+python caffe_resnet_client.py caffe_resnet152
 
+- caffe_resnet50
+tensorflow_model_server --port=8500 --model_name=traffic_resnet50 --model_base_path=/home/yitao/Documents/fun-project/tensorflow-related/traffic-jammer/models/caffe_resnet50 >out-001 2>&1
+python caffe_resnet_client.py caffe_resnet50
 
-tensorflow_model_server --port=8500 --platform_config_file=/home/yitao/Documents/edge/edge-system/config/platform.conf --model_config_file=/home/yitao/Documents/fun-project/tensorflow-related/traffic-jammer/tfserv.conf.traffic --monitoring_config_file=/home/yitao/Documents/edge/edge-system/config/monitoring.conf --rest_api_port=55101 --enable_batching --batching_parameters_file=/home/yitao/Documents/edge/edge-system/config/batching.conf >out-001 2>&1
+- ssd_mobilenet_v1_coco
+tensorflow_model_server --port=8500 --model_name=traffic_mobilenet --model_base_path=/home/yitao/Documents/fun-project/tensorflow-related/traffic-jammer/models/ssd_mobilenet_v1_coco_2018_01_28 >out-001 2>&1
+python obj_client.py mobilenet
 
-
+- ssd_inception_v2_coco
+tensorflow_model_server --port=8500 --model_name=traffic_inception --model_base_path=/home/yitao/Documents/fun-project/tensorflow-related/traffic-jammer/models/ssd_inception_v2_coco_2018_01_28 >out-001 2>&1
+python obj_client.py inception
 
 
 # for single DNN under folder single_dnn_client

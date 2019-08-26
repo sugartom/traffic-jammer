@@ -12,10 +12,9 @@ sys.path.append('/home/yitao/Documents/fun-project/tensorflow-related/Caesar-Edg
 sys.path.append('/home/yitao/Documents/fun-project/tensorflow-related/traffic-jammer/')
 
 from modules_actdet.data_reader import DataReader
-from modules_traffic.yolo import Yolo
+from modules_traffic.traffic_yolo import TrafficYolo
 from modules_traffic.tiny_yolo_voc import TinyYoloVoc
 from modules_traffic.caffe_googlenet import CaffeGooglenet
-from modules_traffic.vgg import Vgg
 from modules_traffic.caffe_resnet50 import CaffeResnet50
 from modules_traffic.caffe_resnet101 import CaffeResnet101
 from modules_traffic.caffe_resnet152 import CaffeResnet152
@@ -28,22 +27,20 @@ reader.Setup("/home/yitao/Documents/fun-project/tensorflow-related/Caesar-Edge/i
 
 # ============ Object Detection Modules ============
 # object detection
-yolo = Yolo()
+yolo = TrafficYolo()
 yolo.Setup()
 yolotiny = TinyYoloVoc()
 yolotiny.Setup()
 
 # person classification
-caffegooglenet = CaffeGooglenet()
-caffegooglenet.Setup()
-vgg = Vgg()
-vgg.Setup()
+# caffegooglenet = CaffeGooglenet()
+# caffegooglenet.Setup()
 
 # car classification
 cafferesnet50 = CaffeResnet50()
 cafferesnet50.Setup()
-cafferesnet101 = CaffeResnet101()
-cafferesnet101.Setup()
+# cafferesnet101 = CaffeResnet101()
+# cafferesnet101.Setup()
 cafferesnet152 = CaffeResnet152()
 cafferesnet152.Setup()
 
@@ -59,10 +56,10 @@ inception.Setup()
 ichannel = grpc.insecure_channel("localhost:8500")
 istub = prediction_service_pb2_grpc.PredictionServiceStub(ichannel)
 
-# real route table will be {Yolo, TinyYoloVoc} - {Inception, Mobilenet}
-#                                              \ {CaffeResnet152, Vgg}
+# real route table will be {traffic_yolo, traffic_tinyyolo} - {traffic_inception, traffic_mobilenet}
+#                                              \ {traffic_resnet152, traffic_resnet50}
 
-simple_route_table = "Yolo-CaffeResnet152"
+simple_route_table = "traffic_tinyyolo-traffic_mobilenet"
 
 route_table = simple_route_table
 
@@ -71,7 +68,7 @@ frame_id = 0
 
 duration_sum = 0.0
 
-while (frame_id < 10):
+while (frame_id < 120):
   start = time.time()
   
   frame_info = "%s-%s" % (sess_id, frame_id)
@@ -91,23 +88,17 @@ while (frame_id < 10):
   for i in range(len(route_table.split('-'))):
     current_model = route_table.split('-')[request_input['route_index']]
 
-    if (current_model == "Yolo"):
-      module_instance = Yolo()
-    elif (current_model == "TinyYoloVoc"):
+    if (current_model == "traffic_yolo"):
+      module_instance = TrafficYolo()
+    elif (current_model == "traffic_tinyyolo"):
       module_instance = TinyYoloVoc()
-    elif (current_model == "CaffeGooglenet"):
-      module_instance = CaffeGooglenet()
-    elif (current_model == "Vgg"):
-      module_instance = Vgg()
-    elif (current_model == "CaffeResnet50"):
-      module_instance = CaffeResnet50()
-    elif (current_model == "CaffeResnet101"):
-      module_instance = CaffeResnet101()
-    elif (current_model == "CaffeResnet152"):
+    elif (current_model == "traffic_resnet152"):
       module_instance = CaffeResnet152()
-    elif (current_model == "Mobilenet"):
+    elif (current_model == "traffic_resnet50"):
+      module_instance = CaffeResnet50()
+    elif (current_model == "traffic_mobilenet"):
       module_instance = Mobilenet()
-    elif (current_model == "Inception"):
+    elif (current_model == "traffic_inception"):
       module_instance = Inception()
 
     module_instance.PreProcess(request_input = request_input, istub = istub, grpc_flag = False)
@@ -139,4 +130,4 @@ while (frame_id < 10):
 
   frame_id += 1
 
-print("On average, it takes %f sec per frame" % (duration_sum / 160))
+print("On average, it takes %f sec per frame" % (duration_sum / 120))

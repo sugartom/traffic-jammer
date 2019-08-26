@@ -46,7 +46,7 @@ class TinyYoloVoc:
     def Apply(self):
         # self.start = time.time()
         # print("[@@@] dtype = %s, shape = %s" % (self.image.dtype, str(self.image.shape)))
-        self.dets = TinyYoloVoc.tfnet.return_predict(self.image, "traffic-tiny-yolo-voc", self.istub)
+        self.dets = TinyYoloVoc.tfnet.return_predict(self.image, "traffic_tinyyolo", self.istub)
         # print("[@@@] This duration = %s" % str(time.time() - self.start))
 
         # print(self.dets)
