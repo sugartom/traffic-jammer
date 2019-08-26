@@ -1,12 +1,12 @@
 - Yolo
-tensorflow_model_server --port=8500 --model_name=traffic-yolo --model_base_path=/home/yitao/Documents/fun-project/tensorflow-related/traffic-jammer/models/traffic-yolo >out-001 2>&1
+tensorflow_model_server --port=8500 --model_name=traffic_yolo --model_base_path=/home/yitao/Documents/fun-project/tensorflow-related/traffic-jammer/models/traffic_yolo >out-001 2>&1
 
 - Yolo tiny
-tensorflow_model_server --port=8500 --model_name=traffic-tiny-yolo-voc --model_base_path=/home/yitao/Documents/fun-project/tensorflow-related/traffic-jammer/models/traffic-tiny-yolo-voc >out-001 2>&1
+tensorflow_model_server --port=8500 --model_name=traffic_tiny_yolo_voc --model_base_path=/home/yitao/Documents/fun-project/tensorflow-related/traffic-jammer/models/traffic_tiny_yolo_voc >out-001 2>&1
 
 
 
-
+tensorflow_model_server --port=8500 --platform_config_file=/home/yitao/Documents/edge/edge-system/config/platform.conf --model_config_file=/home/yitao/Documents/fun-project/tensorflow-related/traffic-jammer/tfserv.conf.traffic --monitoring_config_file=/home/yitao/Documents/edge/edge-system/config/monitoring.conf --rest_api_port=55101 --enable_batching --batching_parameters_file=/home/yitao/Documents/edge/edge-system/config/batching.conf >out-001 2>&1
 
 
 

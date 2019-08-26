@@ -60,21 +60,19 @@ class TinyYoloVoc:
         # self.output = output[:-1]
 
     def PostProcess(self, grpc_flag):        
-        pass
-        # if (grpc_flag):
-        #     try:
-        #         self.request_input
-        #     except AttributeError:
-        #         self.request_input = cv2.imencode('.jpg', self.image)[1].tostring()
+        if (grpc_flag):
+            try:
+                self.request_input
+            except AttributeError:
+                self.request_input = cv2.imencode('.jpg', self.image)[1].tostring()
                 
-        #     next_request = predict_pb2.PredictRequest()
-        #     next_request.inputs['client_input'].CopyFrom(
-        #       tf.make_tensor_proto(self.request_input))
-        #     next_request.inputs['objdet_output'].CopyFrom(
-        #       tf.make_tensor_proto(self.output))
-        #     return next_request
-        # else:
-        #     result = dict()
-        #     result['client_input'] = self.image
-        #     result['objdet_output'] = self.output
-        #     return result
+            next_request = predict_pb2.PredictRequest()
+            next_request.inputs['client_input'].CopyFrom(
+              tf.make_tensor_proto(self.request_input))
+
+            return next_request
+        else:
+            result = dict()
+            result['client_input'] = self.image
+
+            return result
