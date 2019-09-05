@@ -1,5 +1,7 @@
 models/*
+models
 bin/*
+bin
 modules_traffic/*.pyc
 out-*
 pickle_tmp/*
