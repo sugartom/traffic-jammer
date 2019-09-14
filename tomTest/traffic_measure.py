@@ -65,8 +65,8 @@ istub = prediction_service_pb2_grpc.PredictionServiceStub(ichannel)
 # real route table will be {traffic_yolo, traffic_tinyyolo} - {traffic_inception, traffic_mobilenet}
 #                                              \ {traffic_resnet152, traffic_resnet50}
 
-simple_route_table = "traffic_yolo-traffic_resnet50"
-measure_module = "traffic_resnet50"
+simple_route_table = "traffic_yolo-traffic_resnet152"
+measure_module = "traffic_resnet152"
 route_table = simple_route_table
 
 sess_id = "chain_traffic-000"
