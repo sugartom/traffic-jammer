@@ -4,4 +4,5 @@ bin/*
 bin
 modules_traffic/*.pyc
 out-*
+pickle_tmp
 pickle_tmp/*
