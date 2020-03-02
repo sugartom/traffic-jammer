@@ -93,11 +93,15 @@ def runFrame(measure_module, request_input, frame_id):
   elif (measure_module == "traffic_mobilenet"):
     module_instance = mobilenet
 
+  start = time.time()
+
   module_instance.PreProcess(request_input = request_input, istub = istub, grpc_flag = False)
   module_instance.Apply()
   next_request = module_instance.PostProcess(grpc_flag = False)
 
-  print("Finished frame %d for module %s" % (frame_id, measure_module))
+  end = time.time()
+
+  print("Finished frame %d for module %s in %.6f sec" % (frame_id, measure_module, float(end - start)))
 
   if (frame_id == 10):
     global stime
@@ -116,7 +120,7 @@ istub = prediction_service_pb2_grpc.PredictionServiceStub(ichannel)
 #                                              \ {traffic_resnet152, traffic_resnet50}
 
 simple_route_table = "traffic_yolo-traffic_inception"
-measure_module = "traffic_inception"
+measure_module = "traffic_yolo"
 route_table = simple_route_table
 
 sess_id = "chain_traffic-000"

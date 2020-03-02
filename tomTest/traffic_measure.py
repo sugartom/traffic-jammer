@@ -66,7 +66,7 @@ istub = prediction_service_pb2_grpc.PredictionServiceStub(ichannel)
 #                                              \ {traffic_resnet152, traffic_resnet50}
 
 simple_route_table = "traffic_yolo-traffic_resnet152"
-measure_module = "traffic_resnet152"
+measure_module = "traffic_yolo"
 route_table = simple_route_table
 
 sess_id = "chain_traffic-000"
@@ -120,7 +120,8 @@ while (frame_id < 120):
   end = time.time()
   duration = end - start
   print("duration = %s" % str(duration))
-  duration_sum += duration
+  if (frame_id != 0):
+    duration_sum += duration
 
   # if (measure_module == "traffic_resnet152"):
   #   print(next_request["FINAL"])
@@ -137,4 +138,4 @@ while (frame_id < 120):
 
   frame_id += 1
 
-print("On average, it takes %s sec per %s request" % (str(duration_sum / 120), measure_module))
+print("On average (warmup excluded), it takes %s sec per %s request" % (str(duration_sum / 119), measure_module))
