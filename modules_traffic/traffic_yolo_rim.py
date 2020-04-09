@@ -54,23 +54,29 @@ class TrafficYolo:
       next_request["output"] = self.output
     return next_request
 
-# import grpc
-# from tensorflow_serving.apis import prediction_service_pb2_grpc
+unit_test = False
+if (unit_test):
+  import grpc
+  import time
+  from tensorflow_serving.apis import prediction_service_pb2_grpc
 
-# ichannel = grpc.insecure_channel('0.0.0.0:8500')
-# istub = prediction_service_pb2_grpc.PredictionServiceStub(ichannel)
+  ichannel = grpc.insecure_channel('0.0.0.0:8500')
+  istub = prediction_service_pb2_grpc.PredictionServiceStub(ichannel)
 
-# traffic_yolo = TrafficYolo()
-# traffic_yolo.Setup()
+  traffic_yolo = TrafficYolo()
+  traffic_yolo.Setup()
 
-# image = cv2.imread("/home/yitao/Downloads/person.jpg")
-# print(image.shape)
-# request = dict()
-# request["client_input"] = image
+  image = cv2.imread("/home/yitao/Downloads/person.jpg")
+  print(image.shape)
+  request = dict()
+  request["client_input"] = image
 
-# traffic_yolo.PreProcess(request, istub, False)
-# traffic_yolo.Apply()
-# next_request = traffic_yolo.PostProcess(False)
-
-# print(next_request["output"])
+  for i in range(10):
+    start = time.time()
+    traffic_yolo.PreProcess(request, istub, False)
+    traffic_yolo.Apply()
+    next_request = traffic_yolo.PostProcess(False)
+    print(next_request["output"])
+    end = time.time()
+    print("duration = %s" % (end - start))
 

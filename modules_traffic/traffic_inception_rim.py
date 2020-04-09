@@ -113,20 +113,27 @@ class TrafficInception:
       next_request["FINAL"] = "Done"
     return next_request
 
-# import grpc
-# from tensorflow_serving.apis import prediction_service_pb2_grpc
+unit_test = False
+if (unit_test):
+  import grpc
+  import time
+  from tensorflow_serving.apis import prediction_service_pb2_grpc
 
-# ichannel = grpc.insecure_channel('0.0.0.0:8500')
-# istub = prediction_service_pb2_grpc.PredictionServiceStub(ichannel)
+  ichannel = grpc.insecure_channel('0.0.0.0:8500')
+  istub = prediction_service_pb2_grpc.PredictionServiceStub(ichannel)
 
-# traffic_inception = TrafficInception()
-# traffic_inception.Setup()
+  traffic_inception = TrafficInception()
+  traffic_inception.Setup()
 
-# image = cv2.imread("/home/yitao/Downloads/person.jpg")
-# print(image.shape)
-# request = dict()
-# request["client_input"] = image
+  image = cv2.imread("/home/yitao/Downloads/person.jpg")
+  print(image.shape)
+  request = dict()
+  request["client_input"] = image
 
-# traffic_inception.PreProcess(request, istub, False)
-# traffic_inception.Apply()
-# next_request = traffic_inception.PostProcess(False)
+  for i in range(10):
+    start = time.time()
+    traffic_inception.PreProcess(request, istub, False)
+    traffic_inception.Apply()
+    next_request = traffic_inception.PostProcess(False)
+    end = time.time()
+    print("duration = %s" % (end - start))
