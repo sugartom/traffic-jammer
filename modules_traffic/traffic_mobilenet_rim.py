@@ -103,13 +103,13 @@ class TrafficMobilenet:
   def PostProcess(self, grpc_flag):
     if (grpc_flag):
       next_request = predict_pb2.PredictRequest()
-      next_request.inputs["client_input"].CopyFrom(
-        tf.make_tensor_proto(self.image))
+      # next_request.inputs["client_input"].CopyFrom(
+      #   tf.make_tensor_proto(self.image))
       next_request.inputs["FINAL"].CopyFrom(
         tf.make_tensor_proto("Done"))
     else:
       next_request = dict()
-      next_request["client_input"] = self.image
+      # next_request["client_input"] = self.image
       next_request["FINAL"] = "Done"
     return next_request
 
