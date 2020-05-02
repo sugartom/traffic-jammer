@@ -21,7 +21,7 @@ class CaffeResnet152:
 
   def Apply(self):
     request = predict_pb2.PredictRequest()
-    request.model_spec.name = 'traffic_resnet152'
+    request.model_spec.name = 'traffic_resnet'
     request.model_spec.signature_name = 'predict_images'
     request.inputs['images'].CopyFrom(
         tf.contrib.util.make_tensor_proto(self.image, shape=[len(self.image)]))
@@ -38,3 +38,28 @@ class CaffeResnet152:
       next_request = dict()
       next_request["FINAL"] = self.output
     return next_request
+
+unit_test = False
+if (unit_test):
+  import grpc
+  import time
+  from tensorflow_serving.apis import prediction_service_pb2_grpc
+
+  ichannel = grpc.insecure_channel('0.0.0.0:8500')
+  istub = prediction_service_pb2_grpc.PredictionServiceStub(ichannel)
+
+  traffic_resnet = CaffeResnet152()
+  traffic_resnet.Setup()
+
+  image = cv2.imread("/home/yitao/Downloads/person.jpg")
+  print(image.shape)
+  request = dict()
+  request["client_input"] = image
+
+  for i in range(10):
+    start = time.time()
+    traffic_resnet.PreProcess(request, istub, False)
+    traffic_resnet.Apply()
+    next_request = traffic_resnet.PostProcess(False)
+    end = time.time()
+    print("duration = %s" % (end - start))

@@ -38,3 +38,28 @@ class CaffeResnet50:
       next_request = dict()
       next_request["FINAL"] = self.output
     return next_request
+
+unit_test = False
+if (unit_test):
+  import grpc
+  import time
+  from tensorflow_serving.apis import prediction_service_pb2_grpc
+
+  ichannel = grpc.insecure_channel('0.0.0.0:8500')
+  istub = prediction_service_pb2_grpc.PredictionServiceStub(ichannel)
+
+  traffic_resnet = CaffeResnet50()
+  traffic_resnet.Setup()
+
+  image = cv2.imread("/home/yitao/Downloads/person.jpg")
+  print(image.shape)
+  request = dict()
+  request["client_input"] = image
+
+  for i in range(10):
+    start = time.time()
+    traffic_resnet.PreProcess(request, istub, False)
+    traffic_resnet.Apply()
+    next_request = traffic_resnet.PostProcess(False)
+    end = time.time()
+    print("duration = %s" % (end - start))
