@@ -1,3 +1,7 @@
+tensorflow_model_server --port=8500 --platform_config_file=/home/yitao/Documents/edge/edge-system/config/platform.conf --model_config_file=/home/yitao/Documents/fun-project/tensorflow-related/traffic-jammer/tfserv.conf.traffic.new --monitoring_config_file=/home/yitao/Documents/edge/edge-system/config/monitoring.conf --rest_api_port=55101 --enable_batching --batching_parameters_file=/home/yitao/Documents/edge/edge-system/config/batching.conf >out-001 2>&1
+
+================================================
+
 tensorflow_model_server --port=8500 --platform_config_file=/home/yitao/Documents/edge/edge-system/config/platform.conf --model_config_file=/home/yitao/Documents/fun-project/tensorflow-related/traffic-jammer/tfserv.conf.traffic --monitoring_config_file=/home/yitao/Documents/edge/edge-system/config/monitoring.conf --rest_api_port=55101 --enable_batching --batching_parameters_file=/home/yitao/Documents/edge/edge-system/config/batching.conf >out-001 2>&1
 
 
