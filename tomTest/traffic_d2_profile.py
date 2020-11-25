@@ -36,13 +36,18 @@ if not os.path.exists(pickle_directory):
 
 batch_size = 1
 parallel_level = 1
-run_num = 10
+run_num = 500
 
 def runBatch(batch_size, run_num, tid):
   start = time.time()
 
   reader = VideoReader()
-  reader.Setup("%s/indoor_2min.mp4" % os.environ['CAESAR_EDGE_PATH'])
+  # reader.Setup("%s/indoor_2min.mp4" % os.environ['CAESAR_EDGE_PATH'])
+  # reader.Setup("/home/yitao/Downloads/2020-11-07-17_26_41/2_Pike_NS_Seattle.mp4")
+  # reader.Setup("/home/yitao/Downloads/2020-11-07-17_26_41/catsmeow2_NewOrleans.mp4")
+  # reader.Setup("/home/yitao/Downloads/2020-11-07-17_26_41/tsstreet_NYC.mp4")
+  # reader.Setup("/home/yitao/Downloads/2020-11-07-17_26_41/5thAve_PineSt_Seattle.mp4")
+  reader.Setup("/home/yitao/Downloads/2020-11-07-17_26_41/hollywoodblvd_LA.mp4")
 
   frame_id = 0
   batch_id = 0
@@ -82,11 +87,15 @@ def runBatch(batch_size, run_num, tid):
       for result in result_list:
         next_request = module_instance.GetNextRequest(result, grpc_flag = False)
 
-        # if (module_name == "traffic_inception"):
-        #   # print(next_request["objdet_output"])
+        if (module_name == "traffic_inception"):
+          print(len(next_request["objdet_output"].split("-")))
         #   pickle_output = "%s/%s" % (pickle_directory, str(frame_id).zfill(3))
         #   with open(pickle_output, 'w') as f:
         #     pickle.dump(next_request, f)
+
+      if (len(result_list) == 0):
+        print(0)
+
 
     batch_id += 1
 
