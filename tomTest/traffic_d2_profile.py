@@ -17,10 +17,12 @@ from utils_d2 import misc
 from modules_d2.video_reader import VideoReader
 
 sys.path.append(os.environ['TRAFFIC_JAMMER_PATH'])
+from modules_traffic.traffic_yolo_d2 import TrafficYolo
 from modules_traffic.traffic_inception_d2 import TrafficInception
 from modules_traffic.traffic_resnet_d2 import TrafficResnet
 from modules_traffic.traffic_mobilenet_d2 import TrafficMobilenet
 
+TrafficYolo.Setup()
 TrafficInception.Setup()
 TrafficResnet.Setup()
 TrafficMobilenet.Setup()
@@ -28,7 +30,10 @@ TrafficMobilenet.Setup()
 ichannel = grpc.insecure_channel("localhost:8500")
 istub = prediction_service_pb2_grpc.PredictionServiceStub(ichannel)
 
-module_name = "traffic_inception"
+module_name = "traffic_yolo"
+# module_name = "traffic_inception"
+# module_name = "traffic_resnet"
+# module_name = "traffic_mobilenet"
 
 pickle_directory = "%s/pickle_d2/traffic-jammer/%s" % (os.environ['RIM_DOCKER_SHARE'], module_name)
 if not os.path.exists(pickle_directory):
@@ -56,7 +61,7 @@ def runBatch(batch_size, run_num, tid):
     module_instance = misc.prepareModuleInstance(module_name)
     data_array = []
 
-    if (module_name == "traffic_inception"):
+    if (module_name == "traffic_inception" or module_name == "traffic_yolo"):
       for i in range(batch_size):
         client_input = reader.PostProcess()
         request = dict()
@@ -87,7 +92,7 @@ def runBatch(batch_size, run_num, tid):
       for result in result_list:
         next_request = module_instance.GetNextRequest(result, grpc_flag = False)
 
-        if (module_name == "traffic_inception"):
+        if (module_name == "traffic_inception" or module_name == "traffic_yolo"):
           print(len(next_request["objdet_output"].split("-")))
         #   pickle_output = "%s/%s" % (pickle_directory, str(frame_id).zfill(3))
         #   with open(pickle_output, 'w') as f:

@@ -73,9 +73,9 @@ class TrafficInception:
 
     # do the conversion for each key in predict_pb2.PredictRequest()
     if (grpc_flag):
-      raw_image = tensor_util.MakeNdarray(request.inputs["client_input"])
+      raw_image = tensor_util.MakeNdarray(request.inputs["raw_image"])
     else:
-      raw_image = request["client_input"]
+      raw_image = request["raw_image"]
 
     image, org = self.decode_image_opencv(raw_image)
     image = image.astype(np.uint8)
