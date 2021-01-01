@@ -191,9 +191,10 @@ class TrafficResnet:
   # output: result_list = [{"bounding_boxes": bb1_in_image1}, {"bounding_boxes": bb2_in_image1}]
   def GetResultList(self, result_dict):
     result_list = []
-    for i in range(len(result_dict[result_dict.keys()[0]])):
-      if (result_dict["objdet_output"][i] != ""):
-        result_list.append({"objdet_output": result_dict["objdet_output"][i], "raw_image": result_dict["raw_image"][i]})
+    # @@@ manually remove output of resnet to avoid confusion from client side @@@
+    # for i in range(len(result_dict[result_dict.keys()[0]])):
+    #   if (result_dict["objdet_output"][i] != ""):
+    #     result_list.append({"objdet_output": result_dict["objdet_output"][i], "raw_image": result_dict["raw_image"][i]})
     return result_list
 
   # input: result = {"bounding_boxes": bb1_in_image1}
