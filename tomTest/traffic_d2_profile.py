@@ -41,7 +41,8 @@ if not os.path.exists(pickle_directory):
 
 batch_size = 1
 parallel_level = 1
-run_num = 500
+run_num = 100
+warmup_num = 3
 
 def runBatch(batch_size, run_num, tid):
   start = time.time()
@@ -57,7 +58,14 @@ def runBatch(batch_size, run_num, tid):
   frame_id = 0
   batch_id = 0
 
-  while (batch_id < run_num):
+  pre_sum = 0.0
+  app_sum = 0.0
+  post_sum = 0.0
+  total_sum = 0.0
+
+  while (batch_id < (run_num + warmup_num)):
+    t0 = time.time()
+
     module_instance = misc.prepareModuleInstance(module_name)
     data_array = []
 
@@ -78,7 +86,9 @@ def runBatch(batch_size, run_num, tid):
 
     batched_data_dict = module_instance.GetBatchedDataDict(data_array, batch_size)
 
+    t1 = time.time()
     batched_result_dict = module_instance.Apply(batched_data_dict, batch_size, istub)
+    t2 = time.time()
 
     batched_result_array = module_instance.GetBatchedResultArray(batched_result_dict, batch_size)
 
@@ -101,12 +111,22 @@ def runBatch(batch_size, run_num, tid):
       if (len(result_list) == 0):
         print(0)
 
+    t3 = time.time()
+    if (batch_id >= warmup_num):
+      pre_sum += t1 - t0
+      app_sum += t2 - t1
+      post_sum += t3 - t2
+      total_sum += t3 - t0
 
     batch_id += 1
 
   end = time.time()
-  print("[Thread-%d] it takes %.3f sec to run %d batches of batch size %d" % (tid, end - start, run_num, batch_size))
-
+  print("[Thread-%d] it takes %.3f sec to run %d batches of batch size %d" % (tid, end - start, run_num + warmup_num, batch_size))
+  print("Details:")
+  print("  average total = %.3f" % (total_sum / run_num))
+  print("  average pre = %.3f" % (pre_sum / run_num))
+  print("  average apply = %.3f" % (app_sum / run_num))
+  print("  average post = %.3f" % (post_sum / run_num))
 
 # ========================================================================================================================
 
