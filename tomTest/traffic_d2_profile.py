@@ -61,7 +61,7 @@ def runBatch(batch_size, run_num, tid):
     module_instance = misc.prepareModuleInstance(module_name)
     data_array = []
 
-    if (module_name == "traffic_inception" or module_name == "traffic_yolo"):
+    if (module_name == "traffic_yolo"):
       for i in range(batch_size):
         client_input = reader.PostProcess()
         request = dict()
@@ -69,7 +69,7 @@ def runBatch(batch_size, run_num, tid):
         data_dict = module_instance.GetDataDict(request, grpc_flag = False)
         data_array.append(data_dict)
         frame_id += 1
-    elif (module_name == "traffic_resnet" or module_name == "traffic_mobilenet"):
+    elif (module_name == "traffic_resnet" or module_name == "traffic_mobilenet" or module_name == "traffic_inception"):
       pickle_input = "%s/%s" % ("%s/pickle_d2/%s/%s" % (os.environ['RIM_DOCKER_SHARE'], "traffic-jammer", "traffic_inception"), str(1).zfill(3))
       request = pickle.load(open(pickle_input))
       data_dict = module_instance.GetDataDict(request, grpc_flag = False)
@@ -92,7 +92,7 @@ def runBatch(batch_size, run_num, tid):
       for result in result_list:
         next_request = module_instance.GetNextRequest(result, grpc_flag = False)
 
-        if (module_name == "traffic_inception" or module_name == "traffic_yolo"):
+        if (module_name == "traffic_yolo"):
           print(len(next_request["objdet_output"].split("-")))
         #   pickle_output = "%s/%s" % (pickle_directory, str(frame_id).zfill(3))
         #   with open(pickle_output, 'w') as f:
