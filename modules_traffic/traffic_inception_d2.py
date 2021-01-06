@@ -74,14 +74,17 @@ class TrafficInception:
     # do the conversion for each key in predict_pb2.PredictRequest()
     if (grpc_flag):
       raw_image = tensor_util.MakeNdarray(request.inputs["raw_image"])
+      output_flag = int(tensor_util.MakeNdarray(request.inputs["output_flag"]))
     else:
       raw_image = request["raw_image"]
+      output_flag = request["output_flag"]
 
     image, org = self.decode_image_opencv(raw_image)
     image = image.astype(np.uint8)
     data_dict["client_input"] = image
     data_dict["original_shape"] = org.shape
-    data_dict["raw_image"] = raw_image
+    # data_dict["raw_image"] = raw_image
+    data_dict["output_flag"] = output_flag
 
     return data_dict
 
@@ -106,10 +109,15 @@ class TrafficInception:
       for data in data_array:
         batched_data_dict["original_shape"].append(data["original_shape"])
 
-      # raw_image
-      batched_data_dict["raw_image"] = []
+      # # raw_image
+      # batched_data_dict["raw_image"] = []
+      # for data in data_array:
+      #   batched_data_dict["raw_image"].append(data["raw_image"])
+
+      # output_flag
+      batched_data_dict["output_flag"] = []
       for data in data_array:
-        batched_data_dict["raw_image"].append(data["raw_image"])
+        batched_data_dict["output_flag"].append(data["output_flag"])
 
       return batched_data_dict
 
@@ -140,7 +148,8 @@ class TrafficInception:
       batched_result_dict["scores"] = scores
       batched_result_dict["labels"] = labels
       batched_result_dict["original_shape"] = batched_data_dict["original_shape"]
-      batched_result_dict["raw_image"] = batched_data_dict["raw_image"]
+      # batched_result_dict["raw_image"] = batched_data_dict["raw_image"]
+      batched_result_dict["output_flag"] = batched_data_dict["output_flag"]
 
       # for i in range(batch_size):
       #   output = ""
@@ -170,19 +179,25 @@ class TrafficInception:
 
       for i in range(batch_size):
         my_dict = dict()
-        output = ""
-        dim = batched_result_dict["original_shape"][i]
-        for box, score, label in zip(batched_result_dict["boxes"][i], batched_result_dict["scores"][i], batched_result_dict["labels"][i]):
-          if score < INCEPTION_THRES:
-            break
-          box = self.box_normal_to_pixel(box, dim)
-          b = box.astype(int)
-          class_label = self.get_label(int(label))
-          if (class_label == INCEPTION_PEOPLE_LABEL):
-            output += "%s|%s|%s|%s|%s|%s-" % (str(b[0]), str(b[1]), str(b[2]), str(b[3]), str(score), str(class_label))
-        output = output[:-1]
+
+        output_flag = batched_result_dict["output_flag"][i]
+        if (output_flag == 1):
+          output = ""
+          dim = batched_result_dict["original_shape"][i]
+          for box, score, label in zip(batched_result_dict["boxes"][i], batched_result_dict["scores"][i], batched_result_dict["labels"][i]):
+            if score < INCEPTION_THRES:
+              break
+            box = self.box_normal_to_pixel(box, dim)
+            b = box.astype(int)
+            class_label = self.get_label(int(label))
+            if (class_label == INCEPTION_PEOPLE_LABEL):
+              output += "%s|%s|%s|%s|%s|%s-" % (str(b[0]), str(b[1]), str(b[2]), str(b[3]), str(score), str(class_label))
+          output = output[:-1]
+        else:
+          output = ""
+
         my_dict["objdet_output"] = [output]
-        my_dict["raw_image"] = [batched_result_dict["raw_image"][i]]
+        # my_dict["raw_image"] = [batched_result_dict["raw_image"][i]]
         batched_result_array.append(my_dict)
 
       return batched_result_array
@@ -193,7 +208,8 @@ class TrafficInception:
     result_list = []
     for i in range(len(result_dict[result_dict.keys()[0]])):
       if (result_dict["objdet_output"][i] != ""):
-        result_list.append({"objdet_output": result_dict["objdet_output"][i], "raw_image": result_dict["raw_image"][i]})
+        # result_list.append({"objdet_output": result_dict["objdet_output"][i], "raw_image": result_dict["raw_image"][i]})
+        result_list.append({"objdet_output": result_dict["objdet_output"][i]})
     return result_list
 
   # input: result = {"bounding_boxes": bb1_in_image1}
@@ -201,12 +217,12 @@ class TrafficInception:
   def GetNextRequest(self, result, grpc_flag):
     if (grpc_flag):
       next_request = predict_pb2.PredictRequest()
-      next_request.inputs['raw_image'].CopyFrom(
-        tf.make_tensor_proto(result["raw_image"]))
+      # next_request.inputs['raw_image'].CopyFrom(
+      #   tf.make_tensor_proto(result["raw_image"]))
       next_request.inputs["objdet_output"].CopyFrom(
         tf.make_tensor_proto(result["objdet_output"]))
     else:
       next_request = dict()
-      next_request["raw_image"] = result["raw_image"]
+      # next_request["raw_image"] = result["raw_image"]
       next_request["objdet_output"] = result["objdet_output"]
     return next_request

@@ -81,7 +81,7 @@ class TrafficResnet:
     image = image.astype(np.uint8)
     data_dict["client_input"] = image
     data_dict["original_shape"] = org.shape
-    data_dict["raw_image"] = raw_image
+    # data_dict["raw_image"] = raw_image
 
     return data_dict
 
@@ -106,10 +106,10 @@ class TrafficResnet:
       for data in data_array:
         batched_data_dict["original_shape"].append(data["original_shape"])
 
-      # raw_image
-      batched_data_dict["raw_image"] = []
-      for data in data_array:
-        batched_data_dict["raw_image"].append(data["raw_image"])
+      # # raw_image
+      # batched_data_dict["raw_image"] = []
+      # for data in data_array:
+      #   batched_data_dict["raw_image"].append(data["raw_image"])
 
       return batched_data_dict
 
@@ -140,7 +140,7 @@ class TrafficResnet:
       batched_result_dict["scores"] = scores
       batched_result_dict["labels"] = labels
       batched_result_dict["original_shape"] = batched_data_dict["original_shape"]
-      batched_result_dict["raw_image"] = batched_data_dict["raw_image"]
+      # batched_result_dict["raw_image"] = batched_data_dict["raw_image"]
 
       # for i in range(batch_size):
       #   output = ""
@@ -182,7 +182,7 @@ class TrafficResnet:
             output += "%s|%s|%s|%s|%s|%s-" % (str(b[0]), str(b[1]), str(b[2]), str(b[3]), str(score), str(class_label))
         output = output[:-1]
         my_dict["objdet_output"] = [output]
-        my_dict["raw_image"] = [batched_result_dict["raw_image"][i]]
+        # my_dict["raw_image"] = [batched_result_dict["raw_image"][i]]
         batched_result_array.append(my_dict)
 
       return batched_result_array
@@ -202,12 +202,12 @@ class TrafficResnet:
   def GetNextRequest(self, result, grpc_flag):
     if (grpc_flag):
       next_request = predict_pb2.PredictRequest()
-      next_request.inputs['raw_image'].CopyFrom(
-        tf.make_tensor_proto(result["raw_image"]))
+      # next_request.inputs['raw_image'].CopyFrom(
+      #   tf.make_tensor_proto(result["raw_image"]))
       next_request.inputs["objdet_output"].CopyFrom(
         tf.make_tensor_proto(result["objdet_output"]))
     else:
       next_request = dict()
-      next_request["raw_image"] = result["raw_image"]
+      # next_request["raw_image"] = result["raw_image"]
       next_request["objdet_output"] = result["objdet_output"]
     return next_request
