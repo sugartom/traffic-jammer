@@ -175,16 +175,16 @@ class TrafficMobilenet:
         # output = ""
         output = []
 
-        # for j in range(len(batched_result_dict["boxes"][i])):
-        #   box = batched_result_dict["boxes"][i][j]
-        #   score = batched_result_dict["scores"][i][j]
-        #   label = batched_result_dict["labels"][i][j]
+        for j in range(len(batched_result_dict["boxes"][i])):
+          box = batched_result_dict["boxes"][i][j]
+          score = batched_result_dict["scores"][i][j]
+          label = batched_result_dict["labels"][i][j]
 
-        # Debug only to fix scaling factor
-        for j in range(3):
-          box = batched_result_dict["boxes"][i][0]
-          score = batched_result_dict["scores"][i][0]
-          label = batched_result_dict["labels"][i][0]
+        # # Debug only to fix scaling factor
+        # for j in range(3):
+        #   box = batched_result_dict["boxes"][i][0]
+        #   score = batched_result_dict["scores"][i][0]
+        #   label = batched_result_dict["labels"][i][0]
 
 
           if score < INCEPTION_THRES:

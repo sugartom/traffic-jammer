@@ -51,9 +51,9 @@ def runBatch(batch_size, run_num, tid):
   # reader.Setup("%s/indoor_2min.mp4" % os.environ['CAESAR_EDGE_PATH'])
   # reader.Setup("/home/yitao/Downloads/2020-11-07-17_26_41/2_Pike_NS_Seattle.mp4")
   # reader.Setup("/home/yitao/Downloads/2020-11-07-17_26_41/catsmeow2_NewOrleans.mp4")
-  # reader.Setup("/home/yitao/Downloads/2020-11-07-17_26_41/tsstreet_NYC.mp4")
+  reader.Setup("/home/yitao/Downloads/2020-11-07-17_26_41/tsstreet_NYC.mp4")
   # reader.Setup("/home/yitao/Downloads/2020-11-07-17_26_41/5thAve_PineSt_Seattle.mp4")
-  reader.Setup("/home/yitao/Downloads/2020-11-07-17_26_41/hollywoodblvd_LA.mp4")
+  # reader.Setup("/home/yitao/Downloads/2020-11-07-17_26_41/hollywoodblvd_LA.mp4")
 
   frame_id = 0
   batch_id = 0
@@ -63,10 +63,16 @@ def runBatch(batch_size, run_num, tid):
   post_sum = 0.0
   total_sum = 0.0
 
-  while (batch_id < (run_num + warmup_num)):
+  while (batch_id < 50):
+  # while (batch_id < (run_num + warmup_num)):
     t0 = time.time()
 
-    module_instance = misc.prepareModuleInstance(module_name)
+    # module_instance = misc.prepareModuleInstance(module_name)
+    if (module_name == "traffic_yolo"):
+      module_instance = TrafficYolo()
+    else:
+      module_instance = misc.prepareModuleInstance(module_name)
+
     data_array = []
 
     if (module_name == "traffic_yolo"):
@@ -104,6 +110,7 @@ def runBatch(batch_size, run_num, tid):
 
         if (module_name == "traffic_yolo"):
           print(len(next_request["objdet_output"].split("-")))
+          # print(next_request["objdet_output"])
         #   pickle_output = "%s/%s" % (pickle_directory, str(frame_id).zfill(3))
         #   with open(pickle_output, 'w') as f:
         #     pickle.dump(next_request, f)

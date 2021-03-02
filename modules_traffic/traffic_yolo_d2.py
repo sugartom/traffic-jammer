@@ -90,7 +90,8 @@ class TrafficYolo:
         dets = batched_result_dict["batched_result"][i]
         output = ""
         for d in dets:
-          output += "%s|%s|%s|%s|%s|%s-" % (str(d['topleft']['x']), str(d['topleft']['y']), str(d['bottomright']['x']), str(d['bottomright']['y']), str(d['confidence']), str(d['label']))
+          if (str(d['label']) == YOLO_PEOPLE_LABEL):
+            output += "%s|%s|%s|%s|%s|%s-" % (str(d['topleft']['x']), str(d['topleft']['y']), str(d['bottomright']['x']), str(d['bottomright']['y']), str(d['confidence']), str(d['label']))
         output = output[:-1]
         my_dict["objdet_output"] = [output]
         my_dict["raw_image"] = [batched_result_dict["raw_image"][i]]
