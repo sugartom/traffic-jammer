@@ -196,7 +196,7 @@ class TrafficInception:
     result_list = []
 
     for i in range(len(result_dict["objdet_output"])):
-      if (result_dict[objdet_output][i] != "NoOutput"):
+      if (result_dict["objdet_output"][i] != "NoOutput"):
         result_list.append({"objdet_output": result_dict["objdet_output"][i]})
 
     return result_list
